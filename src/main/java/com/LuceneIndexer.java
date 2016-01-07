@@ -57,33 +57,24 @@ public class LuceneIndexer {
      * @param indexPanel If true it will also print the console printout lines 
      * to the main panel.
      */
-    public static void IndexFiles(Global global, Boolean createIndex, Boolean indexPanel) {
+    public static void IndexFiles(Global global, Boolean createIndex) {
         String dataDir = global.dataDir;
         String indexDir = global.indexDir;
 
         //Verifies that the data directory exists
         if (dataDir == null) {
             System.err.println("Data Directory Is not accessable, Unable to Index files.");
-            if (indexPanel) {
-                Global.indexPanelPrintOut(global, "Data Directory Is not accessable, Unable to Index files." + "\n");
-            }
         }
 
         //Verifies that the data directory is readable and writeable
         final Path docDir = Paths.get(dataDir);
         if (!Files.isReadable(docDir)) {
             System.out.println("Document directory '" + docDir.toAbsolutePath() + "' does not exist or is not readable, please check the path");
-            if (indexPanel) {
-                Global.indexPanelPrintOut(global, "Document directory '" + docDir.toAbsolutePath() + "' does not exist or is not readable, please check the path" + "\n");
-            }
         }
 
         startTime = new Date();
         try {
             System.out.println("Indexing to directory '" + indexDir + "'...");
-            if (indexPanel) {
-                Global.indexPanelPrintOut(global, "Indexing to directory '" + indexDir + "'..." + "\n");
-            }
 
             //Setups the analyzer
             Analyzer analyzer;
@@ -108,14 +99,11 @@ public class LuceneIndexer {
 
                 try (IndexWriter writer = new IndexWriter(dir, iwc)) {
                     hm.clear();
-                    indexDocs(writer, docDir, global, indexPanel);
+                    indexDocs(writer, docDir, global);
 
                     //This is a costly operation, we scheduled the time to apply it
                     if (global.merge){
                         System.out.println("Starting Merge");
-                        if (indexPanel) {
-                            Global.indexPanelPrintOut(global, "Starting Merge\n\n");
-                        }
                         writer.forceMerge(1);
                         global.merge = false;
                     }
@@ -135,22 +123,10 @@ public class LuceneIndexer {
                 System.out.println("Number of Documents: " + amountOfDocuments);
                 System.out.println("Finish Time:         " + global.sdf.format(finishTime.getTime()));
                 System.out.println("");
-                if (indexPanel) {
-                    Global.indexPanelPrintOut(global, "\n\n");
-                    Global.indexPanelPrintOut(global, "Start Time: " + global.sdf.format(startTime.getTime()) + "\n");
-                    Global.indexPanelPrintOut(global, "Building List Time: " + listBuildTime + "\n");
-                    Global.indexPanelPrintOut(global, "Indexing Time: " + indexingTime + "\n");
-                    Global.indexPanelPrintOut(global, "Total Time: " + totalTime + "\n");
-                    Global.indexPanelPrintOut(global, "Number of Documents: " + amountOfDocuments + "\n");
-                    Global.indexPanelPrintOut(global, "Finish Time: " + global.sdf.format(finishTime.getTime()) + "\n");
-                }
             }
             analyzer.close();
         } catch (IOException e) {
             System.out.println(" caught a " + e.getClass() + "\n with message: " + e.getMessage());
-            if (indexPanel) {
-                Global.indexPanelPrintOut(global, " caught a " + e.getClass() + "\n with message: " + e.getMessage() + "\n");
-            }
         }
     }
 
@@ -169,7 +145,7 @@ public class LuceneIndexer {
      * to the main panel.
      * @throws IOException If there is a low-level I/O error
      */
-    static void indexDocs(final IndexWriter writer, Path path, Global global, boolean indexPanel) throws IOException {
+    static void indexDocs(final IndexWriter writer, Path path, Global global) throws IOException {
         Date start = new Date();
         
         //load up last index time and write it to the time file
@@ -192,10 +168,7 @@ public class LuceneIndexer {
                         if (Global.validateFileType(file) 
                                 && file.getFileName().toString().startsWith("DELETED_") == false 
                                 && file.getFileName().toString().startsWith("~") == false) {
-                            validateFile(global, indexPanel, file, attrs, lastIndexnumbers);
-                        } else if (global.forceExit) {
-                            System.err.println("TRYING TO BREAK LIST!");
-                            return FileVisitResult.TERMINATE;
+                            validateFile(global, file, attrs, lastIndexnumbers);
                         }
                         return FileVisitResult.CONTINUE;
                     }
@@ -211,20 +184,13 @@ public class LuceneIndexer {
                 TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
         System.out.println("");
         System.out.println("Finished Building List");
-        if (indexPanel) {
-            Global.indexPanelPrintOut(global, "\n");
-            Global.indexPanelPrintOut(global, "Finished Building List");
-            Global.indexPanelPrintOut(global, "\n\n");
-        }
         amountOfDocuments = hm.size();
         
         //Run the multi-threaded index.
         Date indexStart = new Date();
-        if (global.forceExit == false) {
             global.executorRunning = true;
-            runIndexer(global, writer, indexPanel);
+            runIndexer(global, writer);
             global.executorRunning = false;
-        }
         Date indexEnd = new Date();
         long millis2 = indexEnd.getTime() - indexStart.getTime();
         indexingTime = String.format("%02dhr %02dmin %02dsec", TimeUnit.MILLISECONDS.toHours(millis2),
@@ -248,20 +214,14 @@ public class LuceneIndexer {
      * walking the file tree.
      * @param lastIndexTime The last time the Index was ran.
      */
-    public static void validateFile(Global global, boolean indexPanel, Path file, BasicFileAttributes attrs, Date lastIndexTime) {
+    public static void validateFile(Global global, Path file, BasicFileAttributes attrs, Date lastIndexTime) {
         Date dateModified = new Date(attrs.lastModifiedTime().toMillis());
 
         if (global.newIndex == false && dateModified.after(lastIndexTime)) {
             hm.put(file, attrs);
-            if (indexPanel) {
-                Global.indexPanelPrintOut(global, "Last Modified: " + global.sdf.format(dateModified) + " - " + file.toString() + "\n");
-            }
             System.out.println("Last Modified: " + global.sdf.format(dateModified) + " - " + file.toString());
         } else if (global.newIndex == true) {
             hm.put(file, attrs);
-            if (indexPanel) {
-                Global.indexPanelPrintOut(global, file.toString() + "\n");
-            }
             System.out.println(file.toString());
         }
     }
@@ -277,11 +237,11 @@ public class LuceneIndexer {
      * @param indexPanel If true it will also print the console printout lines 
      * to the main panel. 
      */
-    public static void runIndexer(Global global, IndexWriter writer, boolean indexPanel) {
+    public static void runIndexer(Global global, IndexWriter writer) {
         executor = Executors.newFixedThreadPool(global.NUM_THREADS);
 
         hm.entrySet().stream().forEach((Entry<Path, BasicFileAttributes> entry) -> {
-            Runnable worker = new MyRunnable(writer, entry, global, indexPanel);
+            Runnable worker = new MyRunnable(writer, entry, global);
             executor.submit(worker);
         });
 
@@ -303,20 +263,18 @@ public class LuceneIndexer {
         private final BasicFileAttributes attrs;
         private final IndexWriter writer;
         private final Global global;
-        private final boolean indexPanel;
 
-        MyRunnable(IndexWriter writer, Entry file, Global global, boolean indexPanel) {
+        MyRunnable(IndexWriter writer, Entry file, Global global) {
             this.path = (Path) file.getKey();
             this.attrs = (BasicFileAttributes) file.getValue();
             this.writer = writer;
             this.global = global;
-            this.indexPanel = indexPanel;
         }
 
         @Override
         public void run() {
             try {
-                LuceneIndexerAddDocument.indexDoc(writer, path, attrs, global, indexPanel);
+                LuceneIndexerAddDocument.indexDoc(writer, path, attrs, global);
             } catch (IOException ex) {
                 Logger.getLogger(LuceneIndexer.class.getName()).log(Level.SEVERE, null, ex);
             }
