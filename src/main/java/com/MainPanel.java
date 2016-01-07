@@ -39,10 +39,10 @@ public class MainPanel extends javax.swing.JFrame {
 
     private void setDefaults() {
         global.setMainPanel(this);
-        getImage();
-        setIcons();
-        windowListeners();
-        checkSystemTray();
+//        getImage();
+//        setIcons();
+//        windowListeners();
+//        checkSystemTray();
         lastIndexTime();
         runMergeTimerThread();
         runIndexThread();
