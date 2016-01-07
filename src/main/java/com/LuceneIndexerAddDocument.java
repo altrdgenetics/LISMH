@@ -59,11 +59,9 @@ public class LuceneIndexerAddDocument {
      * walking the file tree.
      * @param global This is for reference to the global class variables and
      * methods.
-     * @param indexPanel If true it will also print the console printout lines
-     * to the main panel.
      * @throws IOException
      */
-    static void indexDoc(IndexWriter writer, Path file, BasicFileAttributes attrs, Global global, boolean indexPanel) throws IOException {
+    static void indexDoc(IndexWriter writer, Path file, BasicFileAttributes attrs, Global global) throws IOException {
         File document = file.toFile();
         if (document.renameTo(document)) {
             try (InputStream stream = Files.newInputStream(file)) {
@@ -157,9 +155,6 @@ public class LuceneIndexerAddDocument {
                     // New index, so we just add the document (no old document can be there):
                     writer.addDocument(doc);
                     System.out.println("adding " + file);
-                    if (indexPanel) {
-                        Global.indexPanelPrintOut(global, "adding " + file + "\n");
-                    }
                 } else {
                     /**
                      * Existing index (an old copy of this document may have
@@ -168,16 +163,10 @@ public class LuceneIndexerAddDocument {
                      */
                     writer.updateDocument(new Term("path", file.toString()), doc);
                     System.out.println("updating " + file);
-                    if (indexPanel) {
-                        Global.indexPanelPrintOut(global, "updating " + file + "\n");
-                    }
                 }
             }
         } else {
             System.out.println("LOCKED: " + file);
-            if (indexPanel) {
-                Global.indexPanelPrintOut(global, "LOCKED: " + file + "\n");
-            }
         }
     }
 
