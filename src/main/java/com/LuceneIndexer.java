@@ -169,9 +169,6 @@ public class LuceneIndexer {
                                 && file.getFileName().toString().startsWith("DELETED_") == false 
                                 && file.getFileName().toString().startsWith("~") == false) {
                             validateFile(global, file, attrs, lastIndexnumbers);
-                        } else if (global.forceExit) {
-                            System.err.println("TRYING TO BREAK LIST!");
-                            return FileVisitResult.TERMINATE;
                         }
                         return FileVisitResult.CONTINUE;
                     }
@@ -191,11 +188,9 @@ public class LuceneIndexer {
         
         //Run the multi-threaded index.
         Date indexStart = new Date();
-        if (global.forceExit == false) {
             global.executorRunning = true;
             runIndexer(global, writer);
             global.executorRunning = false;
-        }
         Date indexEnd = new Date();
         long millis2 = indexEnd.getTime() - indexStart.getTime();
         indexingTime = String.format("%02dhr %02dmin %02dsec", TimeUnit.MILLISECONDS.toHours(millis2),

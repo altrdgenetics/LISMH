@@ -5,8 +5,6 @@
  */
 package com;
 
-import java.awt.SystemTray;
-import java.awt.TrayIcon;
 import java.nio.file.Path;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -34,31 +32,14 @@ public class Global {
     
     //System Flags for Indexing
     boolean executorRunning = false;
-    boolean exitNow         = false;
-    boolean forceExit       = false;
     boolean lockIndex       = false;
     boolean merge           = false;
     Date lastIndexTime      = null;
-    
-    //Items for the Tray
-    boolean trayActive      = false;
-    SystemTray tray;
-    TrayIcon trayIcon;
-    
+        
     //Other Defaults
     Thread threadOne, threadTwo;
-    MainPanel mainPanel;
     SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
     
-    /**
-     * Links up the main panel for access across the application
-     * 
-     * @param mainPanel mainPanel class
-     */
-    public void setMainPanel(MainPanel mainPanel) {
-        this.mainPanel = mainPanel;
-    }
-
     /**
     * When building the list to index file this is the verified list of 
     * types we can handle.
@@ -94,19 +75,7 @@ public class Global {
             file.toString().endsWith(".htm")  ||
             file.toString().endsWith(".html") ||
             file.toString().endsWith(".mhtml")||
-            file.toString().endsWith(".csv")   ;
-    }
-    
-    /**
-     * Pass the printout information to the main panel for display.
-     * 
-     * @param global This is for reference to the global class variables 
-     * and methods.
-     * @param text This is the information that will be displayed on the main
-     * panel.
-     */
-    public static void indexPanelPrintOut(Global global, String text) {
-        global.mainPanel.getjTextArea1().append(text);
+            file.toString().endsWith(".csv")  ;
     }
     
 }

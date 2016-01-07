@@ -35,14 +35,7 @@ public class ThreadIndexing {
                     System.out.println("Sleeping for: " + TimeUnit.MILLISECONDS.toMinutes(global.THREAD_SLEEP) + "min");
                     //unlock the application
                     global.lockIndex = false;
-                    
-                    //If exit flag exists exit the application safely
-                    if (global.exitNow == true){
-                        if (global.trayActive == true){
-                            global.tray.remove(global.trayIcon);
-                        }
-                        System.exit(0);
-                    }
+
                     //Sleep the thread based on the INI file variable.
                     Thread.sleep(global.THREAD_SLEEP);
                     
