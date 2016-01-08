@@ -17,28 +17,28 @@ import java.util.Date;
 public class Global {
     
     //INI Information
-    boolean mergeCapable    = false;
-    boolean newIndex        = false;
-    double RAM_BUFFER_SIZE  = 1024.0;
-    int dayOfWeek           = Calendar.FRIDAY;
-    int hourOfDay           = 20;
-    int MAX_BUFFERED_DOCS   = 10;
-    int MERGE_FACTOR        = 100;
-    int NUM_THREADS         = 1;
-    int THREAD_SLEEP        = 600000;
-    int WRITE_LIMIT         = 1000000000;
-    String dataDir          = null;
-    String indexDir         = null;
+    public boolean mergeCapable    = false;
+    public boolean newIndex        = false;
+    public double RAM_BUFFER_SIZE  = 1024.0;
+    public int dayOfWeek           = Calendar.FRIDAY;
+    public int hourOfDay           = 20;
+    public int MAX_BUFFERED_DOCS   = 10;
+    public int MERGE_FACTOR        = 100;
+    public int NUM_THREADS         = 1;
+    public int THREAD_SLEEP        = 600000;
+    public int WRITE_LIMIT         = 1000000000;
+    public String dataDir          = null;
+    public String indexDir         = null;
     
     //System Flags for Indexing
-    boolean executorRunning = false;
-    boolean lockIndex       = false;
-    boolean merge           = false;
-    Date lastIndexTime      = null;
+    public boolean executorRunning = false;
+    public boolean lockIndex       = false;
+    public boolean merge           = false;
+    public Date lastIndexTime      = null;
         
     //Other Defaults
-    Thread threadOne, threadTwo;
-    SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
+    public Thread threadOne, threadTwo;
+    public SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss a");
     
     /**
     * When building the list to index file this is the verified list of 

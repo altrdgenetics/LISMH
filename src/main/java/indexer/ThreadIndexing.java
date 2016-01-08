@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com;
+package indexer;
 
+import com.Global;
+import indexer.LuceneIndexer;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 

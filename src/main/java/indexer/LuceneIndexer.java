@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com;
+package indexer;
 
+import com.Global;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;

@@ -5,6 +5,10 @@
  */
 package com;
 
+import indexer.ThreadIndexing;
+import indexer.ThreadMergeScheduler;
+import parsers.ParseTime;
+import parsers.ParseINI;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.JOptionPane;
@@ -14,10 +18,10 @@ import org.apache.log4j.Logger;
  *
  * @author Andrew
  */
-public class BaseClass {
+public class MainClass {
 
 Global global;
-final Logger log = Logger.getLogger(BaseClass.class);
+final Logger log = Logger.getLogger(MainClass.class);
     
     public void setDefaults() {
         global = new Global();
