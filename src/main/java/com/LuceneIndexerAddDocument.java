@@ -15,8 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.FieldType;
@@ -47,6 +46,8 @@ import org.xml.sax.SAXException;
  * @author Andrew
  */
 public class LuceneIndexerAddDocument {
+    
+    final static Logger log = Logger.getLogger(LuceneIndexerAddDocument.class);
 
     /**
      * Indexes a single document with the aid of Apache Tika.
@@ -148,7 +149,7 @@ public class LuceneIndexerAddDocument {
                         doc.add(new TextField("vcontent", buffedRead));
                     }
                 } catch (SAXException | TikaException ex) {
-                    Logger.getLogger(LuceneIndexer.class.getName()).log(Level.SEVERE, null, ex);
+                    log.fatal("Document Parsing Exception");
                 }
 
                 if (writer.getConfig().getOpenMode() == IndexWriterConfig.OpenMode.CREATE) {

@@ -10,8 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -19,10 +18,10 @@ import java.util.logging.Logger;
  */
 public class ParseTime {
     
+    final Logger log = Logger.getLogger(ParseTime.class);
     private Date lastIndexTime;
     private File timeFile = new File("time.txt");
-    
-    
+        
     /**
      * Grabs the information in time format for the last time the index was ran
      */
@@ -39,7 +38,7 @@ public class ParseTime {
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ParseINI.class.getName()).log(Level.SEVERE, null, ex);
+            log.fatal("Unable to resolve time file");
         }
     }
 
