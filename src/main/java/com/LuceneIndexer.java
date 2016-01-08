@@ -22,8 +22,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.index.IndexWriter;
@@ -38,6 +37,7 @@ import org.apache.lucene.store.FSDirectory;
  */
 public class LuceneIndexer {
 
+    final static Logger log = Logger.getLogger(LuceneIndexer.class);
     static Date finishTime;
     static Date startTime;
     static ExecutorService executor = null;
@@ -127,6 +127,7 @@ public class LuceneIndexer {
             analyzer.close();
         } catch (IOException e) {
             System.out.println(" caught a " + e.getClass() + "\n with message: " + e.getMessage());
+            log.fatal(" caught a " + e.getClass() + "\n with message: " + e.getMessage());
         }
     }
 
@@ -174,7 +175,7 @@ public class LuceneIndexer {
                     }
                 });
             } catch (IOException ex) {
-                Logger.getLogger(LuceneIndexer.class.getName()).log(Level.SEVERE, null, ex);
+                log.fatal("Walking File Path Exception");
             }
         }
         Date end = new Date();
@@ -276,7 +277,7 @@ public class LuceneIndexer {
             try {
                 LuceneIndexerAddDocument.indexDoc(writer, path, attrs, global);
             } catch (IOException ex) {
-                Logger.getLogger(LuceneIndexer.class.getName()).log(Level.SEVERE, null, ex);
+                log.fatal("Thread Index Individual Document Error");
             }
         }
     }
@@ -293,7 +294,7 @@ public class LuceneIndexer {
             executor.shutdownNow();
             executor.awaitTermination(10, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
-            Logger.getLogger(LuceneIndexer.class.getName()).log(Level.SEVERE, null, ex);
+            log.fatal("Thread Index Kill Error");
         }
     }
     
@@ -310,9 +311,9 @@ public class LuceneIndexer {
             bw.write("time = \"" + (global.lastIndexTime).getTime() + "\";");
             bw.close();
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(LuceneIndexer.class.getName()).log(Level.SEVERE, null, ex);
+            log.fatal("File Not Found Creating New Time INI");
         } catch (IOException ex) {
-            Logger.getLogger(LuceneIndexer.class.getName()).log(Level.SEVERE, null, ex);
+            log.fatal("IO Exception New Time INI");
         }
     }
 

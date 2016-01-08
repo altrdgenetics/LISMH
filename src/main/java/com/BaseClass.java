@@ -8,6 +8,7 @@ package com;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import javax.swing.JOptionPane;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -16,6 +17,7 @@ import javax.swing.JOptionPane;
 public class BaseClass {
 
 Global global;
+final Logger log = Logger.getLogger(BaseClass.class);
     
     public void setDefaults() {
         global = new Global();
@@ -60,7 +62,8 @@ Global global;
      * This is a pop-up for failed path resolve
      */
     private void failedPaths(){
-        JOptionPane.showMessageDialog(null, "<html>Unable to resolve directories.<br>Please verify they are accessible.</html>", "Error", JOptionPane.ERROR_MESSAGE);
+        log.fatal("Unable to resolve directories");
+        JOptionPane.showMessageDialog(null, "<html>Unable to resolve directories.<br>Please verify they are accessible.</html>", "Error", JOptionPane.ERROR_MESSAGE);  
     }
     
     /**

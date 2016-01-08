@@ -6,14 +6,16 @@
 package com;
 
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Andrew
  */
 public class ThreadIndexing {    
+    
+    final Logger log = Logger.getLogger(ThreadIndexing.class);
+    
     /**
      * Thread for indexing with Lucene 
      * 
@@ -40,11 +42,11 @@ public class ThreadIndexing {
                     Thread.sleep(global.THREAD_SLEEP);
                     
                 } catch (InterruptedException ex) {
-                   Logger.getLogger(ThreadIndexing.class.getName()).log(Level.SEVERE, null, ex);
+                   log.fatal("Thread Interrupted");
                 }
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(ThreadIndexing.class.getName()).log(Level.SEVERE, null, ex);
+            log.fatal("Thread Interrupted");
         }
     }
     

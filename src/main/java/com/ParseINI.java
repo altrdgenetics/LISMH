@@ -10,14 +10,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Calendar;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Andrew
  */
 public class ParseINI {
+    final static Logger log = Logger.getLogger(ParseINI.class);
     private boolean mergeCapable;
     private boolean newIndex;
     private double RAM_BUFFER_SIZE;
@@ -107,7 +107,7 @@ public class ParseINI {
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(ParseINI.class.getName()).log(Level.SEVERE, null, ex);
+            log.error("This is Severe : " + "Unable to locateINI file");
         }
     }
 

@@ -7,14 +7,15 @@ package com;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Andrew
  */
 public class ThreadMergeScheduler {
+    
+    final Logger log = Logger.getLogger(ThreadMergeScheduler.class);
 
     /**
      * Checks the Date and time in order to set the flag for merging
@@ -38,11 +39,11 @@ public class ThreadMergeScheduler {
                         Thread.sleep(1500000);
                     }
                 } catch (InterruptedException ex) {
-                   Logger.getLogger(ThreadIndexing.class.getName()).log(Level.SEVERE, null, ex);
+                   log.fatal("Thread Interrupted");
                 }
             }
         } catch (InterruptedException ex) {
-            Logger.getLogger(ThreadIndexing.class.getName()).log(Level.SEVERE, null, ex);
+            log.fatal("Thread Interrupted");
         }
     }
 
