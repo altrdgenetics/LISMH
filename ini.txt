@@ -1,0 +1,12 @@
+IndexDirectory = "C:/XLNLegal/Archives/!Index";
+DataDirectory = "C:/XLNLegal/Archives/";
+CreateNewIndex = "false";
+NumberOfThreads = "8";
+RAM_BUFFER_SIZE = "1024.0";
+THREAD_SLEEP = "600000";
+WRITE_LIMIT = "1000000000";
+MAX_BUFFERED_DOCS = "10";
+MERGE_FACTOR = "100";
+Merge = "true";
+Day = "Friday";
+Hour = "21";
