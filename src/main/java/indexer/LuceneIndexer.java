@@ -38,7 +38,7 @@ import org.apache.lucene.store.FSDirectory;
  */
 public class LuceneIndexer {
 
-    final static Logger log = Logger.getLogger(LuceneIndexer.class);
+    static Logger log = Logger.getLogger(LuceneIndexer.class);
     static Date finishTime;
     static Date startTime;
     static ExecutorService executor = null;
@@ -55,8 +55,6 @@ public class LuceneIndexer {
      * and methods.
      * @param createIndex If true a new index will be created from scratch
      * and the old index will be destroyed.
-     * @param indexPanel If true it will also print the console printout lines 
-     * to the main panel.
      */
     public static void IndexFiles(Global global, Boolean createIndex) {
         String dataDir = global.dataDir;
@@ -208,8 +206,6 @@ public class LuceneIndexer {
      * 
      * @param global This is for reference to the global class variables 
      * and methods.
-     * @param indexPanel If true it will also print the console printout lines 
-     * to the main panel.
      * @param file The file to index, or the directory to recurse into to find
      * files to index.
      * @param attrs This is the attributes from the given file gathered from 
@@ -235,9 +231,7 @@ public class LuceneIndexer {
      * @param global This is for reference to the global class variables 
      * and methods.
      * @param writer Writer to the index where the given file/dir info will be
-     * stored.
-     * @param indexPanel If true it will also print the console printout lines 
-     * to the main panel. 
+     * stored. 
      */
     public static void runIndexer(Global global, IndexWriter writer) {
         executor = Executors.newFixedThreadPool(global.NUM_THREADS);
