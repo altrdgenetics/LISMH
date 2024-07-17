@@ -18,7 +18,7 @@ import org.apache.log4j.Logger;
  */
 public class ParseTime {
     
-    final Logger log = Logger.getLogger(ParseTime.class);
+    static Logger log = Logger.getLogger(ParseTime.class);
     private Date lastIndexTime;
     private File timeFile = new File("time.txt");
         

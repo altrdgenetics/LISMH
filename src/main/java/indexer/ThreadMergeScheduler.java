@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
  */
 public class ThreadMergeScheduler {
     
-    final Logger log = Logger.getLogger(ThreadMergeScheduler.class);
+    static Logger log = Logger.getLogger(ThreadMergeScheduler.class);
 
     /**
      * Checks the Date and time in order to set the flag for merging

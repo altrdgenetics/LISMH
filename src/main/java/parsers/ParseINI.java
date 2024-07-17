@@ -17,7 +17,7 @@ import org.apache.log4j.Logger;
  * @author Andrew
  */
 public class ParseINI {
-    final static Logger log = Logger.getLogger(ParseINI.class);
+    static Logger log = Logger.getLogger(ParseINI.class);
     private boolean mergeCapable;
     private boolean newIndex;
     private double RAM_BUFFER_SIZE;

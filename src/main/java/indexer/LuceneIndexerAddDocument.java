@@ -48,7 +48,7 @@ import org.xml.sax.SAXException;
  */
 public class LuceneIndexerAddDocument {
     
-    final static Logger log = Logger.getLogger(LuceneIndexerAddDocument.class);
+    static Logger log = Logger.getLogger(LuceneIndexerAddDocument.class);
 
     /**
      * Indexes a single document with the aid of Apache Tika.

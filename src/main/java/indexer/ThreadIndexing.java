@@ -6,7 +6,6 @@
 package indexer;
 
 import com.Global;
-import indexer.LuceneIndexer;
 import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
@@ -16,7 +15,7 @@ import org.apache.log4j.Logger;
  */
 public class ThreadIndexing {    
     
-    final Logger log = Logger.getLogger(ThreadIndexing.class);
+    static Logger log = Logger.getLogger(ThreadIndexing.class);
     
     /**
      * Thread for indexing with Lucene 
