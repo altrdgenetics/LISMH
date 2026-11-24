@@ -8,7 +8,6 @@ package indexer;
 import com.Global;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,15 +27,16 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.index.Term;
 import org.apache.tika.exception.TikaException;
+import org.apache.tika.io.TikaInputStream;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.epub.EpubParser;
-import org.apache.tika.parser.html.HtmlParser;
+import org.apache.tika.parser.html.JSoupParser;
 import org.apache.tika.parser.microsoft.OfficeParser;
 import org.apache.tika.parser.microsoft.ooxml.OOXMLParser;
 import org.apache.tika.parser.odf.OpenDocumentParser;
 import org.apache.tika.parser.pdf.PDFParser;
-import org.apache.tika.parser.rtf.RTFParser;
+import org.apache.tika.parser.microsoft.rtf.RTFParser;
 import org.apache.tika.parser.txt.TXTParser;
 import org.apache.tika.parser.xml.XMLParser;
 import org.apache.tika.sax.BodyContentHandler;
@@ -88,7 +88,7 @@ public class LuceneIndexerAddDocument {
                 //Parser type for Tika
                 BodyContentHandler handler = new BodyContentHandler(global.WRITE_LIMIT);
                 Metadata metadata = new Metadata();
-                FileInputStream inputstream = new FileInputStream(new File(file.toString()));
+                TikaInputStream inputstream = TikaInputStream.get(file);
                 ParseContext pcontext = new ParseContext();
 
                 //New Field Type
@@ -134,7 +134,7 @@ public class LuceneIndexerAddDocument {
                         XMLparser.parse(inputstream, handler, metadata, pcontext);
                         doc.add(new Field("vcontent", handler.toString(), bodyType));
                     } else if (file.toString().endsWith(".htm") || file.toString().endsWith(".html") || file.toString().endsWith(".mhtml")) {
-                        HtmlParser HTMLparser = new HtmlParser();
+                        JSoupParser HTMLparser = new JSoupParser();
                         HTMLparser.parse(inputstream, handler, metadata, pcontext);
                         doc.add(new Field("vcontent", handler.toString(), bodyType));
                     } else if (file.toString().endsWith(".rtf")) {
